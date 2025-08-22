@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""TerraSmart CLI executable script (short alias)."""
+
+import sys
+import os
+from pathlib import Path
+
+# Add the CLI module to Python path
+script_dir = Path(__file__).parent.absolute()
+cli_dir = script_dir / "apps" / "cli"
+sys.path.insert(0, str(cli_dir))
+
+# Import and run the CLI
+try:
+    from terrasmartrun.cli import main
+    if __name__ == "__main__":
+        main()
+except ImportError as e:
+    print(f"Error importing TerraSmart CLI: {e}")
+    print(f"Make sure you're running from the TerraSmart directory: {script_dir}")
+    sys.exit(1)

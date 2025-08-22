@@ -1,0 +1,16 @@
+terraform {
+  required_version = ">= 1.5"
+  required_providers {
+    cloudflare = { source = "cloudflare/cloudflare", version = "~> 5" }
+  }
+}
+
+variable "zone_name"  { type = string }
+variable "hostname"   { type = string }
+variable "worker_name"{ type = string }
+variable "account_id" { type = string }
+
+provider "cloudflare" {}
+
+data "cloudflare_zones" "zone" { name = var.zone_name }
+locals { zone_id = data.cloudflare_zones.zone.result[0].id }

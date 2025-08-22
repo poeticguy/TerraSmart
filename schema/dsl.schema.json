@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "type": "object",
+  "required": ["intent", "zone_name", "hostname"],
+  "properties": {
+    "intent": {
+      "enum": [
+        "create_worker_and_bind_domain",
+        "create_dns_record",
+        "create_kv_namespace",
+        "create_d1_database",
+        "delete_dns_record"
+      ]
+    },
+    "zone_name": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+    "hostname":  { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+    "routing":   { 
+      "type": "object", 
+      "properties": { 
+        "mode": { "enum": ["custom_domain", "route"] } 
+      },
+      "additionalProperties": false
+    },
+    "worker": {
+      "type": "object",
+      "required": ["name", "module", "compatibility_date"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z0-9-]{3,}$" },
+        "module": { "type": "boolean" },
+        "compatibility_date": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "bindings": {
+      "type": "object",
+      "properties": {
+        "kv": { "type": "array", "items": { "type": "string" } },
+        "d1": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "dns_record": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["A", "AAAA", "CNAME", "TXT", "MX", "NS"] },
+        "content": { "type": "string" },
+        "ttl": { "type": "integer", "minimum": 1 },
+        "proxied": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

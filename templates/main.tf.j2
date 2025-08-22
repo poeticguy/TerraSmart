@@ -1,0 +1,104 @@
+{% if intent == "create_worker_and_bind_domain" %}
+resource "cloudflare_workers_script" "app" {
+  account_id         = var.account_id
+  name               = var.worker_name
+  module             = {{ "true" if worker.module else "false" }}
+  compatibility_date = "{{ worker.compatibility_date }}"
+  content            = file("${path.module}/src/worker.js")
+  {% for ns in (bindings.kv or []) %}
+  kv_namespace_binding {
+    name         = "{{ ns | upper }}"
+    namespace_id = cloudflare_workers_kv_namespace.{{ ns }}.id
+  }
+  {% endfor %}
+  {% for db in (bindings.d1 or []) %}
+  d1_database_binding {
+    name        = "{{ db | upper }}"
+    database_id = cloudflare_d1_database.{{ db }}.id
+  }
+  {% endfor %}
+}
+
+{% for ns in (bindings.kv or []) %}
+resource "cloudflare_workers_kv_namespace" "{{ ns }}" {
+  account_id = var.account_id
+  title      = "{{ ns }}"
+}
+{% endfor %}
+
+{% for db in (bindings.d1 or []) %}
+resource "cloudflare_d1_database" "{{ db }}" {
+  account_id = var.account_id
+  name       = "{{ db }}"
+}
+{% endfor %}
+
+{% if (routing.mode or "custom_domain") == "custom_domain" %}
+resource "cloudflare_workers_custom_domain" "host" {
+  account_id = var.account_id
+  script_name = cloudflare_workers_script.app.name
+  zone_id    = local.zone_id
+  hostname   = var.hostname
+}
+{% else %}
+resource "cloudflare_dns_record" "host" {
+  zone_id = local.zone_id
+  name    = replace(var.hostname, ".{{ zone_name }}", "")
+  type    = "CNAME"
+  content = "{{ zone_name }}"
+  proxied = true
+  ttl     = 300
+}
+resource "cloudflare_worker_route" "route" {
+  zone_id     = local.zone_id
+  pattern     = "${var.hostname}/*"
+  script_name = cloudflare_workers_script.app.name
+}
+{% endif %}
+
+{% elif intent == "create_dns_record" %}
+resource "cloudflare_dns_record" "record" {
+  zone_id = local.zone_id
+  name    = replace(var.hostname, ".{{ zone_name }}", "")
+  type    = "{{ dns_record.type }}"
+  content = "{{ dns_record.content }}"
+  ttl     = {{ dns_record.ttl }}
+  proxied = {{ "true" if dns_record.proxied else "false" }}
+}
+
+{% elif intent == "delete_dns_record" %}
+# Create a placeholder resource that will be imported and then destroyed
+resource "cloudflare_dns_record" "record_to_delete" {
+  zone_id = local.zone_id
+  name    = replace(var.hostname, ".{{ zone_name }}", "")
+  type    = "{{ dns_record.type }}"
+  {% if dns_record.content %}
+  content = "{{ dns_record.content }}"
+  {% else %}
+  content = "placeholder-will-be-replaced-on-import"
+  {% endif %}
+  ttl     = 300
+  proxied = false
+  
+  lifecycle {
+    # This resource should be imported first, then destroyed
+    prevent_destroy = false
+  }
+}
+
+# Output instructions for manual deletion
+output "deletion_instructions" {
+  value = <<-EOT
+    To delete the DNS record:
+    1. Find the record ID in Cloudflare dashboard or API
+    2. Import it: terraform import cloudflare_dns_record.record_to_delete <record_id>
+    3. Destroy it: terraform destroy -target=cloudflare_dns_record.record_to_delete
+    
+    Record details to find:
+    - Zone: {{ zone_name }}
+    - Name: ${replace(var.hostname, ".{{ zone_name }}", "")}
+    - Type: {{ dns_record.type }}
+    {% if dns_record.content %}- Content: {{ dns_record.content }}{% endif %}
+  EOT
+}
+{% endif %}
