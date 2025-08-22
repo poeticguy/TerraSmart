@@ -1,4 +1,4 @@
-# TerraSmart 🌍
+# TerraSmart
 
 **Natural language to Terraform CLI for Cloudflare infrastructure**
 
@@ -7,16 +7,16 @@ TerraSmart converts your natural language descriptions into production-ready Ter
 [![Test](https://github.com/poeticguy/terrasmart/actions/workflows/test.yml/badge.svg)](https://github.com/poeticguy/terrasmart/actions/workflows/test.yml)
 [![Release](https://github.com/poeticguy/terrasmart/actions/workflows/release.yml/badge.svg)](https://github.com/poeticguy/terrasmart/actions/workflows/release.yml)
 
-## ✨ Features
+## Features
 
-- 🤖 **AI-Powered**: Uses OpenAI GPT models to understand natural language
-- 🔒 **Secure**: Stores credentials safely with proper file permissions
-- 🚀 **Fast**: Direct Terraform execution with automatic initialization
-- 📦 **Easy Install**: Available as `.deb` package or via pip
-- 🛠️ **Comprehensive**: Supports Workers, DNS, KV namespaces, D1 databases
-- 🔍 **Validated**: JSON Schema validation with intelligent fallbacks
+- **AI-Powered**: Uses OpenAI GPT models to understand natural language
+- **Secure**: Stores credentials safely with proper file permissions
+- **Fast**: Direct Terraform execution with automatic initialization
+- **Easy Install**: Available as `.deb` package or via pip
+- **Comprehensive**: Supports Workers, DNS, KV namespaces, D1 databases
+- **Validated**: JSON Schema validation with intelligent fallbacks
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -67,14 +67,14 @@ ts apply
 ts dryrun "Create a Worker with KV storage for cache.mycompany.com"
 ```
 
-## 📋 Requirements
+## Requirements
 
 - **Python 3.10+**
 - **Terraform >= 1.5** ([Install Terraform](https://terraform.io/downloads))
 - **OpenAI API key** ([Get API key](https://platform.openai.com/api-keys))
 - **Cloudflare API token** ([Create token](https://dash.cloudflare.com/profile/api-tokens))
 
-## 🔧 Commands
+## Commands
 
 ### `ts init`
 Initialize configuration with API keys and settings.
@@ -91,7 +91,7 @@ Generate Terraform files without executing them.
 ### `ts doctor`
 Check system requirements and configuration.
 
-## 🏗️ Supported Infrastructure
+## Supported Infrastructure
 
 ### Cloudflare Workers
 - Worker script deployment
@@ -109,14 +109,14 @@ Check system requirements and configuration.
 - KV namespaces
 - D1 databases
 
-## 🔐 Security
+## Security
 
 - API keys stored in `~/.config/terrasmart/config.toml` with `0600` permissions
 - No credentials logged or exposed
 - Secure environment variable handling
 - Terraform state managed locally
 
-## 📁 Configuration
+## Configuration
 
 Configuration is stored in `~/.config/terrasmart/config.toml`:
 
@@ -131,7 +131,7 @@ zone_name = "mycompany.com"
 model_id = "gpt-4o-mini"
 ```
 
-## 🛠️ Development
+## Development
 
 ### Setup Development Environment
 
@@ -156,7 +156,7 @@ cd deb
 ./build.sh
 ```
 
-## 🌟 Examples
+## Examples
 
 ### Worker with Custom Domain
 ```bash
@@ -178,7 +178,7 @@ ts plan "Add a CNAME record for www.example.com"
 ts plan "Create a Worker with D1 database and KV namespace for app.example.com"
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -186,20 +186,20 @@ ts plan "Create a Worker with D1 database and KV namespace for app.example.com"
 4. Add tests
 5. Submit a pull request
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
+## Author
 
 **Fernando Reyes** ([@poeticguy](https://github.com/poeticguy))
 
-## 🐛 Issues & Support
+## Issues & Support
 
 - [Report Issues](https://github.com/poeticguy/terrasmart/issues)
 - [Feature Requests](https://github.com/poeticguy/terrasmart/issues/new?template=feature_request.md)
 
-## 🗺️ Roadmap
+## Roadmap
 
 - **v0.2**: Terraform Cloud integration, remote state management
 - **v0.3**: Additional Cloudflare resources (R2, security rules)
@@ -207,4 +207,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-**Made with ❤️ for the DevOps community**
+**Made for the DevOps community**
