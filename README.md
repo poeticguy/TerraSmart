@@ -4,8 +4,6 @@
 
 TerraSmart converts your natural language descriptions into production-ready Terraform configurations for Cloudflare resources. Simply describe what you want in plain English (or Spanish), and TerraSmart will generate, plan, and apply the infrastructure for you.
 
-[![Test](https://github.com/poeticguy/terrasmart/actions/workflows/test.yml/badge.svg)](https://github.com/poeticguy/terrasmart/actions/workflows/test.yml)
-[![Release](https://github.com/poeticguy/terrasmart/actions/workflows/release.yml/badge.svg)](https://github.com/poeticguy/terrasmart/actions/workflows/release.yml)
 
 ## Features
 
