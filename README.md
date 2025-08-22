@@ -76,19 +76,29 @@ ts dryrun "Create a Worker with KV storage for cache.mycompany.com"
 
 ## Commands
 
-### `ts init`
+```bash
+ts init
+```
 Initialize configuration with API keys and settings.
 
-### `ts plan "<description>"`
+```bash
+ts plan "<description>"
+```
 Convert natural language to Terraform and run `terraform plan`.
 
-### `ts apply [--approve]`
+```bash
+ts apply [--approve]
+```
 Apply the last generated Terraform configuration.
 
-### `ts dryrun "<description>"`
+```bash
+ts dryrun "<description>"
+```
 Generate Terraform files without executing them.
 
-### `ts doctor`
+```bash
+ts doctor
+```
 Check system requirements and configuration.
 
 ## Supported Infrastructure
